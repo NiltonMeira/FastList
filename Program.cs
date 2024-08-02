@@ -30,7 +30,7 @@ public class MyList<T> : ICollection<T>
 
     public void Clear()
     {
-        throw new NotImplementedException();
+        head = null;
     }
 
     public bool Contains(T item)
