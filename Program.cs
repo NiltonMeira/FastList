@@ -1,16 +1,145 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System.Collections;
+﻿using System.Collections;
+using System.Data;
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using Microsoft.VisualBasic;
 
-Console.WriteLine("Hello, World!");
+List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+List<int> list2 = [1, 2, 3];
+List<int> list3 = [7, 8, 9];
+var query = list.Take(3);
+var query2 = list.Skip(3);
+var query3 = list.Count();
+var query4 = list.ToArray();
+var query5 = list2.Zip(list2, list3);
+foreach(var value in query5)
+  Console.WriteLine(value);
+
+public static class Enumerable
+{
+    public static IEnumerable<T> Skip<T>(
+        this IEnumerable<T> collection, int count
+    )
+    {
+        var it = collection.GetEnumerator();
+
+        for (int i = 1; i > 0 && it.MoveNext(); i++)
+        {
+            if (i > count)
+                yield return it.Current;
+        }
+    }
+
+    public static int Count<T>(
+        this IEnumerable<T> collection
+    )
+
+    {
+        var it = collection.GetEnumerator();
+        var count = 0;
+
+        for (int i = 1; i > 0 && it.MoveNext(); i++)
+        {
+            count++;
+        }
+
+        return count;
+    }
+
+    public static IEnumerable<T> Take<T>(
+        this IEnumerable<T> collection, int count)
+    {
+        var it = collection.GetEnumerator();
+        for (int i = 0; i < count && it.MoveNext(); i++)
+            yield return it.Current;
+    }
+
+     public static T[] ToArray<T>(
+        this IEnumerable<T> collection)
+    {
+        T[] array = new T[collection.Count()];
+        var it = collection.GetEnumerator();
+
+        for (int i = 0; i < collection.Count() && it.MoveNext(); i++)
+        {
+            array.Append(it.Current);
+        }
+        return array;
+    }
+
+    public static IEnumerable<T> Append<T>(
+        this IEnumerable<T> collection, T value
+    )
+    {
+        var it = collection.GetEnumerator();
+        
+
+        for (int i = 0; i < collection.Count() && it.MoveNext(); i++) 
+        {
+            yield return it.Current;
+        }
+
+        yield return value;
+    }
+
+    public static IEnumerable<T> Preappend<T>(
+        this IEnumerable<T> collection, T value
+    )
+    {
+        var it = collection.GetEnumerator();
+        
+        yield return value;
+
+        for (int i = 0; i < collection.Count() && it.MoveNext(); i++) 
+        {
+            yield return it.Current;
+        }
+    }
+
+     public static T FirstOrDefault<T>(
+        this IEnumerable<T> collection
+    )
+    {
+        var it = collection.GetEnumerator();
+        return it.MoveNext() ? it.Current : default;
+    }
+
+    public static IEnumerable<(T,R)> Zip<T,R>(
+        this IEnumerable<T> collection,
+        IEnumerable<R> other
+    )
+    {
+        var it = collection.GetEnumerator();
+        var it2 = other.GetEnumerator();
+
+        var countCol = collection.Count();
+        var countOther = other.Count();
+
+        var smaller = countCol > countOther ? countOther : countCol;
+
+        for (int i = 0; i < smaller && it.MoveNext() && it2.MoveNext(); i++)
+        {
+            yield return (it.Current, it2.Current);
+        }
+    }
+
+    // public static IEnumerable<T[]> Chunk<T>(
+    //     this IEnumerable<T> collection,
+    //     int size
+    // )
+    // {
+
+    // }
+
+}
 
 public class MyList<T> : ICollection<T>
 {
     private MyNode<T> head = new MyNode<T>();
     private MyNode<T> last = new MyNode<T>();
 
-    public int Count {get; private set;}
+    public int Count { get; private set; }
 
     public bool IsReadOnly => false;
 
@@ -18,9 +147,9 @@ public class MyList<T> : ICollection<T>
     {
         ArgumentNullException.ThrowIfNull(item, nameof(item));
         head ??= new MyNode<T>();
-        last??= head;
+        last ??= head;
 
-        if(last.IsFull())
+        if (last.IsFull())
             last = new MyNode<T>();
 
         last.Add(item);
@@ -31,20 +160,21 @@ public class MyList<T> : ICollection<T>
     public void Clear()
     {
         head = null;
+        last = null;
     }
 
     public bool Contains(T item)
     {
         MyNode<T> node = head;
 
-        while(node != null)
+        while (node != null)
         {
-            if(node.Contains(item) >= 0)
+            if (node.Contains(item) >= 0)
                 return true;
 
             node = node.GetNext();
         }
-        
+
         return false;
     }
 
@@ -52,9 +182,10 @@ public class MyList<T> : ICollection<T>
     {
         MyNode<T> node = head;
 
-        for(int i = arrayIndex; i < arrayIndex + Count; i++)
+        //ajustar aqui
+        for (int i = arrayIndex; i < arrayIndex + Count; i++)
         {
-            for(int j = 0; j < node.GetSize(); j++)
+            for (int j = 0; j < node.GetSize(); j++)
             {
                 array[i] = node.Get(j);
                 i++;
@@ -106,7 +237,7 @@ public class MyList<T> : ICollection<T>
             }
             size--;
 
-            if(size == 0)
+            if (size == 0)
                 previous.SetNext(next);
 
             return true;
@@ -116,6 +247,7 @@ public class MyList<T> : ICollection<T>
         {
             for (int i = 0; i < size; i++)
             {
+
                 if (array[i]?.Equals(item) ?? false)
                 {
                     return i;
@@ -140,7 +272,7 @@ public class MyList<T> : ICollection<T>
             next = null;
         }
 
-         public MyNode<T> GetPrevious()
+        public MyNode<T> GetPrevious()
         {
             return previous;
         }

@@ -1,0 +1,15 @@
+c:\Users\disrct\Desktop\Nilton\FastList\bin\Debug\net8.0\FastList.exe
+C:\Users\disrct\Desktop\Nilton\FastList\bin\Debug\net8.0\FastList.deps.json
+C:\Users\disrct\Desktop\Nilton\FastList\bin\Debug\net8.0\FastList.runtimeconfig.json
+c:\Users\disrct\Desktop\Nilton\FastList\bin\Debug\net8.0\FastList.dll
+c:\Users\disrct\Desktop\Nilton\FastList\bin\Debug\net8.0\FastList.pdb
+c:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\FastList.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\FastList.AssemblyInfoInputs.cache
+c:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\FastList.AssemblyInfo.cs
+c:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\FastList.csproj.CoreCompileInputs.cache
+c:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\FastList.sourcelink.json
+c:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\FastList.dll
+c:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\refint\FastList.dll
+c:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\FastList.pdb
+C:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\FastList.genruntimeconfig.cache
+C:\Users\disrct\Desktop\Nilton\FastList\obj\Debug\net8.0\ref\FastList.dll

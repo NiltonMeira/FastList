@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\disrct\\Desktop\\NIltinho\\FastList\\FastList.csproj",
+      "projectUniqueName": "C:\\Users\\disrct\\Desktop\\Nilton\\FastList\\FastList.csproj",
       "projectName": "FastList",
-      "projectPath": "C:\\Users\\disrct\\Desktop\\NIltinho\\FastList\\FastList.csproj",
+      "projectPath": "C:\\Users\\disrct\\Desktop\\Nilton\\FastList\\FastList.csproj",
       "packagesPath": "C:\\Users\\disrct\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\disrct\\Desktop\\NIltinho\\FastList\\obj\\",
+      "outputPath": "C:\\Users\\disrct\\Desktop\\Nilton\\FastList\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\disrct\\AppData\\Roaming\\NuGet\\NuGet.Config"
