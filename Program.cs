@@ -16,6 +16,53 @@ var query5 = list2.Zip(list2, list3);
 foreach(var value in query5)
   Console.WriteLine(value);
 
+Func<int, int, int> variavel = minhaFunc;
+
+var valor = variavel(6,4);
+
+int minhaFunc(int a, int b)
+{
+    return a+b;
+}  
+
+
+var funcao = (int x, int z) => x + z; // buscando o Func atrevez do var
+var chamanVezes = (Action func, int n) =>
+{
+    int total = 0;
+    for (int i = 0; i < n;)
+      func();
+
+    return total;
+};
+
+chamanVezes(
+    () => Console.WriteLine("Olá mundo"),
+    100
+);
+
+Func<int, Func<int>> func = n =>
+{
+    return () => n +5;
+};
+
+Func<int[], int, Func<int, int[]>> paginacao = (dados, tamanho) =>
+{
+    return(pagina) =>
+    {
+        int[] paginaDados = new int [tamanho];
+        Array.Copy(
+            dados, tamanho * pagina,
+            paginaDados, 0,
+            tamanho
+        );
+        return paginaDados;
+    };
+};
+int[] valoreskk = [0,1,2];
+var paginas = paginacao(valoreskk,4);
+var dadosDaPagina2 = paginas(4);
+
 public static class Enumerable
 {
     public static IEnumerable<T> Skip<T>(

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FastList")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+212e453bf7389db2afd7569ad6c71e158ae82bbf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33b54b9464b4084365eaad023339450599a65cec")]
 [assembly: System.Reflection.AssemblyProductAttribute("FastList")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FastList")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
