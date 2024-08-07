@@ -3,65 +3,69 @@ using System.Data;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.VisualBasic;
 
 List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-List<int> list2 = [1, 2, 3];
-List<int> list3 = [7, 8, 9];
-var query = list.Take(3);
-var query2 = list.Skip(3);
-var query3 = list.Count();
-var query4 = list.ToArray();
-var query5 = list2.Zip(list2, list3);
-foreach(var value in query5)
-  Console.WriteLine(value);
+// List<int> list2 = [1, 2, 3];
+// List<int> list3 = [7, 8, 9];
+// // var query = list.Take(3);
+// var query2 = list.Skip(3);
+// var query3 = list.Count();
+// var query4 = list.ToArray();
+// var query5 = list2.Zip(list2, list3);
+// foreach (var value in query5)
+//     Console.WriteLine(value);
 
-Func<int, int, int> variavel = minhaFunc;
+// Func<int, int, int> variavel = minhaFunc;
 
-var valor = variavel(6,4);
+// var valor = variavel(6, 4);
+var query6 = list.MaxBy(i => i + 4.5);
+Console.WriteLine();
 
-int minhaFunc(int a, int b)
-{
-    return a+b;
-}  
+// int minhaFunc(int a, int b)
+
+// {
+//     return a + b;
+// }
 
 
-var funcao = (int x, int z) => x + z; // buscando o Func atrevez do var
-var chamanVezes = (Action func, int n) =>
-{
-    int total = 0;
-    for (int i = 0; i < n;)
-      func();
+// var funcao = (int x, int z) => x + z; // buscando o Func atrevez do var
+// var chamanVezes = (Action func, int n) =>
+// {
+//     int total = 0;
+//     for (int i = 0; i < n;)
+//         func();
 
-    return total;
-};
+//     return total;
+// };
 
-chamanVezes(
-    () => Console.WriteLine("Olá mundo"),
-    100
-);
+// chamanVezes(
+//     () => Console.WriteLine("Olá mundo"),
+//     100
+// );
 
-Func<int, Func<int>> func = n =>
-{
-    return () => n +5;
-};
+// Func<int, Func<int>> func = n =>
+// {
+//     return () => n + 5;
+// };
 
-Func<int[], int, Func<int, int[]>> paginacao = (dados, tamanho) =>
-{
-    return(pagina) =>
-    {
-        int[] paginaDados = new int [tamanho];
-        Array.Copy(
-            dados, tamanho * pagina,
-            paginaDados, 0,
-            tamanho
-        );
-        return paginaDados;
-    };
-};
-int[] valoreskk = [0,1,2];
-var paginas = paginacao(valoreskk,4);
-var dadosDaPagina2 = paginas(4);
+// Func<int[], int, Func<int, int[]>> paginacao = (dados, tamanho) =>
+// {
+//     return (pagina) =>
+//     {
+//         int[] paginaDados = new int[tamanho];
+//         Array.Copy(
+//             dados, tamanho * pagina,
+//             paginaDados, 0,
+//             tamanho
+//         );
+//         return paginaDados;
+//     };
+// };
+// int[] valoreskk = [0, 1, 2];
+// var paginas = paginacao(valoreskk, 4);
+// var dadosDaPagina2 = paginas(4);
 
 public static class Enumerable
 {
@@ -102,8 +106,8 @@ public static class Enumerable
             yield return it.Current;
     }
 
-     public static T[] ToArray<T>(
-        this IEnumerable<T> collection)
+    public static T[] ToArray<T>(
+       this IEnumerable<T> collection)
     {
         T[] array = new T[collection.Count()];
         var it = collection.GetEnumerator();
@@ -120,9 +124,9 @@ public static class Enumerable
     )
     {
         var it = collection.GetEnumerator();
-        
 
-        for (int i = 0; i < collection.Count() && it.MoveNext(); i++) 
+
+        for (int i = 0; i < collection.Count() && it.MoveNext(); i++)
         {
             yield return it.Current;
         }
@@ -135,24 +139,24 @@ public static class Enumerable
     )
     {
         var it = collection.GetEnumerator();
-        
+
         yield return value;
 
-        for (int i = 0; i < collection.Count() && it.MoveNext(); i++) 
+        for (int i = 0; i < collection.Count() && it.MoveNext(); i++)
         {
             yield return it.Current;
         }
     }
 
-     public static T FirstOrDefault<T>(
-        this IEnumerable<T> collection
-    )
+    public static T FirstOrDefault<T>(
+       this IEnumerable<T> collection
+   )
     {
         var it = collection.GetEnumerator();
         return it.MoveNext() ? it.Current : default;
     }
 
-    public static IEnumerable<(T,R)> Zip<T,R>(
+    public static IEnumerable<(T, R)> Zip<T, R>(
         this IEnumerable<T> collection,
         IEnumerable<R> other
     )
@@ -171,6 +175,90 @@ public static class Enumerable
         }
     }
 
+    public static IEnumerable<T> TakeWhile<T>(
+        this IEnumerable<T> collection, Func<T, bool> predicate)
+    {
+        var it = collection.GetEnumerator();
+
+        while (it.MoveNext()) 
+        {
+            if (predicate(it.Current))
+            {
+                yield return it.Current;
+            }
+            else 
+            {
+                break;
+            }
+        }
+    }
+
+    public static IEnumerable<T> SkipWhile<T>(
+       this IEnumerable<T> collection, Func<T, bool> predicate)
+    {
+        var it = collection.GetEnumerator();
+        bool isTrue = true;
+
+        foreach (var item in collection)
+        {
+            if(!predicate(item))
+            {
+                isTrue = false;
+            }
+
+            if (!isTrue)
+            {
+                yield return item;
+            }
+           
+        }
+    }
+
+
+    public static T MaxBy<T>(
+     this IEnumerable<T> collection, Func<T, double> selector)
+    {
+        var it = collection.GetEnumerator();
+
+        var bigvalue = 0d;
+        T fodao = default;
+        
+        foreach (var item in collection)
+        {
+            var value = selector(item);
+            if (bigvalue < value)
+                bigvalue = value;
+                fodao = item;
+        }
+        return fodao;
+    }
+
+    public static bool Any<T, R>(
+        this IEnumerable<T> collection, Func<T, bool> predicate)
+    {
+        var it = collection.GetEnumerator();
+
+        foreach (var item in collection) 
+        {
+            if (predicate(item))
+                return true;
+        }
+
+        return false;
+    }
+
+    public static R Aggregate<T, R>(
+        this IEnumerable<T> collection, Func<T, R, R> acc, R seed
+    )
+    {
+        foreach (var item in collection) 
+        {
+            seed = acc(item, seed);
+        }
+
+        return seed;
+    }
+ 
     // public static IEnumerable<T[]> Chunk<T>(
     //     this IEnumerable<T> collection,
     //     int size
@@ -181,187 +269,187 @@ public static class Enumerable
 
 }
 
-public class MyList<T> : ICollection<T>
-{
-    private MyNode<T> head = new MyNode<T>();
-    private MyNode<T> last = new MyNode<T>();
+// public class MyList<T> : ICollection<T>
+// {
+//     private MyNode<T> head = new MyNode<T>();
+//     private MyNode<T> last = new MyNode<T>();
 
-    public int Count { get; private set; }
+//     public int Count { get; private set; }
 
-    public bool IsReadOnly => false;
+//     public bool IsReadOnly => false;
 
-    public void Add(T item)
-    {
-        ArgumentNullException.ThrowIfNull(item, nameof(item));
-        head ??= new MyNode<T>();
-        last ??= head;
+//     public void Add(T item)
+//     {
+//         ArgumentNullException.ThrowIfNull(item, nameof(item));
+//         head ??= new MyNode<T>();
+//         last ??= head;
 
-        if (last.IsFull())
-            last = new MyNode<T>();
+//         if (last.IsFull())
+//             last = new MyNode<T>();
 
-        last.Add(item);
+//         last.Add(item);
 
-        Count++;
-    }
+//         Count++;
+//     }
 
-    public void Clear()
-    {
-        head = null;
-        last = null;
-    }
+//     public void Clear()
+//     {
+//         head = null;
+//         last = null;
+//     }
 
-    public bool Contains(T item)
-    {
-        MyNode<T> node = head;
+//     public bool Contains(T item)
+//     {
+//         MyNode<T> node = head;
 
-        while (node != null)
-        {
-            if (node.Contains(item) >= 0)
-                return true;
+//         while (node != null)
+//         {
+//             if (node.Contains(item) >= 0)
+//                 return true;
 
-            node = node.GetNext();
-        }
+//             node = node.GetNext();
+//         }
 
-        return false;
-    }
+//         return false;
+//     }
 
-    public void CopyTo(T[] array, int arrayIndex)
-    {
-        MyNode<T> node = head;
+//     public void CopyTo(T[] array, int arrayIndex)
+//     {
+//         MyNode<T> node = head;
 
-        //ajustar aqui
-        for (int i = arrayIndex; i < arrayIndex + Count; i++)
-        {
-            for (int j = 0; j < node.GetSize(); j++)
-            {
-                array[i] = node.Get(j);
-                i++;
-            }
-            node = node.GetNext();
-        }
-    }
+//         //ajustar aqui
+//         for (int i = arrayIndex; i < arrayIndex + Count; i++)
+//         {
+//             for (int j = 0; j < node.GetSize(); j++)
+//             {
+//                 array[i] = node.Get(j);
+//                 i++;
+//             }
+//             node = node.GetNext();
+//         }
+//     }
 
-    public IEnumerator<T> GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
+//     public IEnumerator<T> GetEnumerator()
+//     {
+//         throw new NotImplementedException();
+//     }
 
-    public bool Remove(T item)
-    {
-        throw new NotImplementedException();
-    }
+//     public bool Remove(T item)
+//     {
+//         throw new NotImplementedException();
+//     }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
+//     IEnumerator IEnumerable.GetEnumerator()
+//     {
+//         throw new NotImplementedException();
+//     }
 
-    public class MyNode<T>
-    {
-        private T[] array = new T[32];
-        private int size = 0;
-        private MyNode<T> next = null;
+//     public class MyNode<T>
+//     {
+//         private T[] array = new T[32];
+//         private int size = 0;
+//         private MyNode<T> next = null;
 
-        private MyNode<T> previous = null;
+//         private MyNode<T> previous = null;
 
-        public void Add(T value)
-        {
-            array[size] = value;
-            size++;
-        }
+//         public void Add(T value)
+//         {
+//             array[size] = value;
+//             size++;
+//         }
 
-        public bool Remove(T item)
-        {
-            int index = Contains(item);
+//         public bool Remove(T item)
+//         {
+//             int index = Contains(item);
 
-            if (index < 0)
-                return false;
-
-
-            for (int i = index; i < size; i++)
-            {
-                array[i] = array[i + 1];
-            }
-            size--;
-
-            if (size == 0)
-                previous.SetNext(next);
-
-            return true;
-        }
-
-        public int Contains(T item)
-        {
-            for (int i = 0; i < size; i++)
-            {
-
-                if (array[i]?.Equals(item) ?? false)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        public MyNode<T> GetNext()
-        {
-            return next;
-        }
-
-        public void SetNext(MyNode<T> node)
-        {
-            next = node;
-        }
-
-        public void RemoveNext()
-        {
-            next = null;
-        }
-
-        public MyNode<T> GetPrevious()
-        {
-            return previous;
-        }
-
-        public void SetPrevious(MyNode<T> node)
-        {
-            previous = node;
-        }
-
-        public void RemovePrevious()
-        {
-            next = null;
-        }
-
-        public bool IsFull()
-        {
-            return size == 0;
-        }
-
-        public int GetSize()
-        {
-            return size;
-        }
-
-        public T Get(int index)
-        {
-            return array[index];
-        }
+//             if (index < 0)
+//                 return false;
 
 
-    }
-}
+//             for (int i = index; i < size; i++)
+//             {
+//                 array[i] = array[i + 1];
+//             }
+//             size--;
 
-public class MyIterator<T> : IEnumerable<T>
-{
-    public IEnumerator<T> GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
+//             if (size == 0)
+//                 previous.SetNext(next);
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
-}
+//             return true;
+//         }
+
+//         public int Contains(T item)
+//         {
+//             for (int i = 0; i < size; i++)
+//             {
+
+//                 if (array[i]?.Equals(item) ?? false)
+//                 {
+//                     return i;
+//                 }
+//             }
+
+//             return -1;
+//         }
+
+//         public MyNode<T> GetNext()
+//         {
+//             return next;
+//         }
+
+//         public void SetNext(MyNode<T> node)
+//         {
+//             next = node;
+//         }
+
+//         public void RemoveNext()
+//         {
+//             next = null;
+//         }
+
+//         public MyNode<T> GetPrevious()
+//         {
+//             return previous;
+//         }
+
+//         public void SetPrevious(MyNode<T> node)
+//         {
+//             previous = node;
+//         }
+
+//         public void RemovePrevious()
+//         {
+//             next = null;
+//         }
+
+//         public bool IsFull()
+//         {
+//             return size == 0;
+//         }
+
+//         public int GetSize()
+//         {
+//             return size;
+//         }
+
+//         public T Get(int index)
+//         {
+//             return array[index];
+//         }
+
+
+//     }
+// }
+
+// public class MyIterator<T> : IEnumerable<T>
+// {
+//     public IEnumerator<T> GetEnumerator()
+//     {
+//         throw new NotImplementedException();
+//     }
+
+//     IEnumerator IEnumerable.GetEnumerator()
+//     {
+//         throw new NotImplementedException();
+//     }
+// }
